@@ -7,7 +7,7 @@ function App() {
 	const [lat, setLat] = useState([]);
 	const [long, setLong] = useState([]);
 	const [data, setData] = useState([]);
-	const [city, setCity] = useState([]);
+	const [city, setCity] = useState(["delhi"]);
 	const [userData, setUserData] = useState([]);
 
 	const userCity = useMemo(() => {
@@ -20,6 +20,7 @@ function App() {
 			// console.log(city);
 		}
 	};
+
 	useEffect(() => {
 		const fetchCity = async () => {
 			await fetch(
@@ -33,28 +34,42 @@ function App() {
 		};
 		fetchCity();
 	}, [userCity]);
-	// console.log(userData[0].lat, userData[0].lon);
+
+	let cityLat = 0;
+	let cityLon = 0;
+	if (userData[0]) {
+		cityLat = userData[0].lat;
+		cityLon = userData[0].lon;
+	}
 
 	useEffect(() => {
-		if (userData[0]) {
-			// Move the state updates inside the useEffect
-			setLat(userData[0].lat);
-			setLong(userData[0].lon);
-		}
-	}, [userData]);
-
-	useEffect(() => {
-		// default url : https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 		const fetchData = async () => {
-			// navigator.geolocation.getCurrentPosition(function (position) {
-			// 	setLat(position.coords.latitude);
-			// 	setLong(position.coords.longitude);
-			// });
+			navigator.geolocation.getCurrentPosition(function (position) {
+				setLat(position.coords.latitude);
+				setLong(position.coords.longitude);
+			});
+
+			await fetch(
+				`https://api.openweathermap.org/data/2.5/weather?lat=${cityLat}&lon=${cityLon}&units=metric&appid=1a5946b2a8203e88bafb92ea5f41800f`
+			)
+				.then((res) => res.json())
+				.then((result) => {
+					setData(result);
+					console.log(result);
+				});
+		};
+		fetchData();
+	}, [cityLat, cityLon]);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			navigator.geolocation.getCurrentPosition(function (position) {
+				setLat(position.coords.latitude);
+				setLong(position.coords.longitude);
+			});
 
 			await fetch(
 				`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&units=metric&appid=1a5946b2a8203e88bafb92ea5f41800f`
-				// `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&units=metric&appid=1a5946b2a8203e88bafb92ea5f41800f`
-				// `${process.env.API_URL}/weather/?lat=${lat}&lon=${long}&units=metric&appid=${process.env.API_KEY}`
 			)
 				.then((res) => res.json())
 				.then((result) => {
@@ -81,7 +96,6 @@ function App() {
 			) : (
 				<div>Error</div>
 			)}
-			{/* <Home weatherData={data} /> */}
 		</div>
 	);
 }
