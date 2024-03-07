@@ -1,0 +1,50 @@
+.home{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.home-header{
+    display: flex;
+    justify-content: center;
+}
+.home-content{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+width: auto;
+}
+.home-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+input{
+    width: 60%;
+    display: flex;
+    align-self: center;
+    border-radius: 5px;
+    border: 1px solid rgb(70, 201, 140)
+}
+span{
+    margin:1px;
+    letter-spacing: .1rem;
+    display: flex;
+    justify-self: flex-end;
+    /* justify-content: center; */
+    text-align: center;
+    align-self: center;
+    width: 50vh;
+    align-items: center;
+    font-family:monospace;
+    font-weight: 600;
+    font-size: 14px;
+}
+.span-div{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    justify-content: center;
+    width: 60%;
+    align-content: center;
+}
